@@ -12,8 +12,9 @@ router.post("/login", async function (req, res, next) {
 
 router.post("/signup", async function (req, res, next) {
   try {
-    const { username, password } = req.body;
-    return res.json({ username, password });
+    const { firstName, lastName, username, email, password } = req.body;
+    let msg = "this is working";
+    return res.json({ message: msg });
   } catch (err) {
     return next(err);
   }

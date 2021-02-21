@@ -1,8 +1,8 @@
 const express = require("express");
 
 const app = express();
-const auth_route = require("./routes/auth_route");
-const user_route = require("./routes/user_route");
+const auth_route = require("./routes/auth-route");
+const user_route = require("./routes/user-route");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
