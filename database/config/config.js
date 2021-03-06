@@ -1,5 +1,5 @@
 require("dotenv").config();
-const pkg = require("../package.json");
+const pkg = require("../../package.json");
 const { DB_HOST, DB_USERNAME, DB_PASSWORD } = process.env;
 
 module.exports = {
