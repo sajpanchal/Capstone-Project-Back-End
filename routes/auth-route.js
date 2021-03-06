@@ -4,8 +4,13 @@ const userController = require('../controller/user-controller')
 
 router.post("/login", async function (req, res, next) {
   try {
-    const { username, password } = req.body;
-    return res.json({ username, password });
+    if(!req.body.username || !req.body.password){
+      res.status(400)
+      res.send({error:"Mandatory fields missing"})
+    }
+    else { 
+      await userController.login(req,res)}
+
   } catch (err) {
     return next(err);
   }
