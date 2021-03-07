@@ -1,4 +1,8 @@
+const bcryptjs = require("bcryptjs");
+const { BCRYPT_WORK_FACTOR } = require("../../middleware/auth");
+
 "use strict";
+
 
 module.exports = {
   up: async (queryInterface) => {
@@ -10,7 +14,7 @@ module.exports = {
           lastName: "Snow",
           email: "johnsnow@email.com",
           username: "johnsnow",
-          password: "password",
+          password: await bcryptjs.hash("password", BCRYPT_WORK_FACTOR),
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -19,7 +23,7 @@ module.exports = {
           lastName: "Winter",
           email: "davidwinter@email.com",
           username: "davidwinter",
-          password: "password",
+          password: await bcryptjs.hash("password", BCRYPT_WORK_FACTOR),
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -28,7 +32,7 @@ module.exports = {
           lastName: "Doe",
           email: "charliedow@email.com",
           username: "charliedoe",
-          password: "password",
+          password: await bcryptjs.hash("password", BCRYPT_WORK_FACTOR),
           createdAt: new Date(),
           updatedAt: new Date(),
         },
@@ -37,7 +41,7 @@ module.exports = {
           lastName: "Harper",
           email: "alanharper@email.com",
           username: "alanharper",
-          password: "password",
+          password: await bcryptjs.hash("password", BCRYPT_WORK_FACTOR),
           createdAt: new Date(),
           updatedAt: new Date(),
         },
