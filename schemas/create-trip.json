@@ -1,0 +1,35 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "http://example.com/example.json",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 30
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "source": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 30
+    },
+    "destination": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 30
+    },
+    "startDate": {
+      "type": "object"
+    },
+    "endDate": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "required": ["name", "description", "source", "destination", "startDate", "endDate"]
+}
