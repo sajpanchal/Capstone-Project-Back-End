@@ -3,24 +3,29 @@ const jsonschema = require("jsonschema");
 
 const router = expressInstance.Router();
 const itineraryController = require("../controller/itinerary-controller");
-const itineraryCreationSchema = require("../schemas/itinerary-schema.json");
+const { ensureLoggedIn } = require("../middleware/auth");
+const itineraryCreationSchema = require("../schemas/create-itinerary.json");
 
-router.post("/create-itinerary", async function (req, res, next) {
-  try {
-    let validator = jsonschema.validate(req.body, itineraryCreationSchema);
-    if (!validator.valid) {
-      const err = validator.errors.map((e) => e.stack)[0];
-      console.error("Schema error on itinerary creation", err);
-      res.status(400);
-      res.send({ error: err });
-    } else {
-      await itineraryController.createItinerary(req, res);
+router.post(
+  "/create-itinerary",
+  ensureLoggedIn,
+  async function (req, res, next) {
+    try {
+      let validator = jsonschema.validate(req.body, itineraryCreationSchema);
+      if (!validator.valid) {
+        const err = validator.errors.map((e) => e.stack)[0];
+        console.error("Schema error on itinerary creation", err);
+        res.status(400);
+        res.send({ error: err });
+      } else {
+        await itineraryController.createItinerary(req, res);
+      }
+    } catch (err) {
+      return next(err);
     }
-  } catch (err) {
-    return next(err);
   }
-});
-router.delete("/:id", async function (req, res, next) {
+);
+router.delete("/:id", ensureLoggedIn, async function (req, res, next) {
   try {
     let itineraryId = Number(req.params.id, 10);
 

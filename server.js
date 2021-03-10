@@ -2,7 +2,12 @@ const expressInstance = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const app = require("./app");
-const db = require('./database/models/index')
+const db = require("./database/models/index");
+
+// force: true will drop the table if it already exists
+// db.sequelize.sync({ force: true }).then(() => {
+//   console.log("Drop and Resync with { force: true }");
+// });
 
 const PORT = process.env.PORT;
 
@@ -31,8 +36,8 @@ server.get("/", async (req, res, next) => {
         "You have reached codejunxion NodeJS API, start making requests to this server",
     });
   } catch (error) {
-    console.error('Unable to connect to the server:', error);
-    res.status(500)
+    console.error("Unable to connect to the server:", error);
+    res.status(500);
     res.json({ Message: `Unable to connect to the server` });
   }
 });

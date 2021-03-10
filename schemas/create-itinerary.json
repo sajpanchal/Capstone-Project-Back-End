@@ -15,8 +15,11 @@
     },
     "date": {
       "type": "object"
+    },
+    "fk_tripid": {
+      "type": "string"
     }
   },
   "additionalProperties": false,
-  "required": ["name", "description"]
+  "required": ["name", "description", "fk_tripid"]
 }

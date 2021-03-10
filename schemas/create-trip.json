@@ -28,8 +28,11 @@
     },
     "endDate": {
       "type": "object"
+    },
+    "fk_organizerid": {
+      "type": "string"
     }
   },
   "additionalProperties": false,
-  "required": ["name", "description", "source", "destination", "startDate", "endDate"]
+  "required": ["name", "description", "source", "destination", "fk_organizerid"]
 }

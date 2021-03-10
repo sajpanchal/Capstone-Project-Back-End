@@ -1,7 +1,7 @@
 /** Middleware for handling req authorization for routes. */
 const jwt = require("jsonwebtoken");
 const express = require("express");
-const session = require('express-session');
+const session = require("express-session");
 const app = express();
 app.use(session);
 
@@ -25,21 +25,23 @@ function authenticateJWT(req, res, next) {
 
 /** Middleware: Requires user to be authenticated. */
 
-function ensureLoggedIn(req, res, next){
-    if(req.session.user){
-       next();     //If session exists, proceed to page
-    } else {
-        //Error, trying to access unauthorized page!
-       console.log(req.session.user);
-       return next({ status: 401, message: "Unauthorized" });  
-    }
- }
+function ensureLoggedIn(req, res, next) {
+  if (req.session.user) {
+    next(); //If session exists, proceed to page
+  } else {
+    //Error, trying to access a logged in page!
+    return next({
+      status: 401,
+      message: "Please login first to access this route",
+    });
+  }
+}
 
 /** Middleware: Requires correct userid to perform any action on the userid. */
 
 function ensureCorrectUser(req, res, next) {
   try {
-    if (req.user.id === req.params.id) {
+    if (req.session.user.id === req.params.id) {
       return next();
     } else {
       return next({ status: 401, message: "Unauthorized" });
@@ -54,5 +56,6 @@ module.exports = {
   authenticateJWT,
   ensureLoggedIn,
   ensureCorrectUser,
-  BCRYPT_WORK_FACTOR
+  BCRYPT_WORK_FACTOR,
+  SECRET_KEY,
 };

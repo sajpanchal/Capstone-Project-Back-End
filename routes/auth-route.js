@@ -2,6 +2,7 @@ const express = require("express");
 const jsonschema = require("jsonschema");
 const router = new express.Router();
 const userController = require("../controller/user-controller");
+const { ensureLoggedIn } = require("../middleware/auth");
 const userLoginSchema = require("../schemas/user-login.json");
 const userSignupSchema = require("../schemas/user-signup.json");
 
@@ -39,10 +40,10 @@ router.post("/signup", async function (req, res, next) {
   }
 });
 
-router.get("/logout", async function (req, res, next) {
+router.get("/logout", ensureLoggedIn, async function (req, res, next) {
   try {
     req.session.destroy();
-    let msg = "User logged out";
+    let msg = "User session deleted";
     return res.json({ message: msg });
   } catch (err) {
     return next(err);
