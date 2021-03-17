@@ -9,6 +9,7 @@
     * DB_HOST=localhost
     * DB_USERNAME='postgres'
     * DB_PASSWORD='postgres'
+    * SECRET_KEY='development-secret'
  
 ## Run this command only once on first time setup
 ### **npm run db-seed**
