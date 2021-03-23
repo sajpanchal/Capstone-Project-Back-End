@@ -36,4 +36,26 @@ module.exports = {
         res.status(404).send({ error: "Something went wrong, try again" })
       );
   },
+
+  updateItinerary(req, res) {
+    if ( !req.params.id ) {
+      res.status(401).send({ message: "Unathorized to update this itenarary" });
+    } 
+    else {
+    db.Itinerary.update({
+      name: req.body.name,
+      description: req.body.description,
+      date: req.body.date || new Date(),
+      fk_tripid: req.body.fk_tripid,
+      updatedAt: new Date(),
+    },{
+      where: { id: req.params.id }
+    })
+      .then((existingItinerary) => {
+        res.status(201).send({
+          message: `updated Itinerary ${existingItinerary.name}  successfully`,
+        });
+      })
+  }
+}
 };

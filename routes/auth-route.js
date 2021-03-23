@@ -42,9 +42,16 @@ router.post("/signup", async function (req, res, next) {
 
 router.get("/logout", ensureLoggedIn, async function (req, res, next) {
   try {
-    req.session.destroy();
-    let msg = "User session deleted";
-    return res.json({ message: msg });
+    if (req.user.username == null) {
+      let msg = "No user session found";
+      return res.send({ message: msg });
+    } else {
+      req.user.username = null;
+      res.clearCookie("token");
+      res.clearCookie("user-id");
+      let msg = "User session deleted";
+      return res.json({ message: msg });
+    }
   } catch (err) {
     return next(err);
   }

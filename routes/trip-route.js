@@ -3,6 +3,7 @@ const router = expressInstance.Router();
 const jsonschema = require("jsonschema");
 const tripController = require("../controller/trip-controller");
 const { ensureLoggedIn } = require("../middleware/auth");
+const tripUpdationSchema = require("../schemas/update-trip.json");
 const tripCreationSchema = require("../schemas/create-trip.json");
 
 router.post("/create-trip", ensureLoggedIn, async function (req, res, next) {
@@ -29,6 +30,22 @@ router.delete("/:id", ensureLoggedIn, async function (req, res, next) {
       res.send({ error: `Invalid tripId` });
     } else {
       await tripController.deleteTrip(req, res);
+    }
+  } catch (err) {
+    return next(err);
+  }
+});
+
+router.put("/:id/update-trip", ensureLoggedIn, async function (req, res, next) {
+  try {
+    let validator = jsonschema.validate(req.body, tripUpdationSchema);
+    if (!validator.valid) {
+      const err = validator.errors.map((e) => e.stack)[0];
+      console.error("Schema error on trip updation", err);
+      res.status(400);
+      res.send({ error: err });
+    } else {
+      await tripController.updateTrip(req, res);
     }
   } catch (err) {
     return next(err);
