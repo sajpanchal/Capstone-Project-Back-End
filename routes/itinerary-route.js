@@ -43,6 +43,7 @@ router.delete("/:id", ensureLoggedIn, async function (req, res, next) {
 
 router.put(
   "/:id/update-itinerary",
+  ensureLoggedIn,
   async function (req, res, next) {
     try {
       let validator = jsonschema.validate(req.body, itineraryUpdationSchema);

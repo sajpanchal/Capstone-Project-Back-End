@@ -1,7 +1,7 @@
 const express = require("express");
 const logger = require("morgan");
-const session = require("express-session");
 const app = express();
+const { authenticateJWT } = require("./middleware/auth");
 
 const auth_route = require("./routes/auth-route");
 const trip_route = require("./routes/trip-route");
@@ -10,18 +10,12 @@ const user_route = require("./routes/user-route");
 
 // Log requests to the console.
 app.use(logger("dev"));
-// Use server side sessions in express
-app.use(
-  session({
-    secret: process.env.SECRET_KEY || "development-secret",
-    name: "user-cookie",
-    resave: true,
-    saveUninitialized: true,
-  })
-);
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+//get auth token for all routes
+app.use(authenticateJWT);
 
 // All routes in the app are listed below
 app.use("/auth", auth_route);

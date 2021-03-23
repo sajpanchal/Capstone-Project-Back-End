@@ -36,7 +36,7 @@ router.delete("/:id", ensureLoggedIn, async function (req, res, next) {
   }
 });
 
-router.put("/:id/update-trip", async function (req, res, next) {
+router.put("/:id/update-trip", ensureLoggedIn, async function (req, res, next) {
   try {
     let validator = jsonschema.validate(req.body, tripUpdationSchema);
     if (!validator.valid) {

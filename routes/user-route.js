@@ -20,8 +20,20 @@ router.delete("/:id", ensureLoggedIn, async function (req, res, next) {
   }
 });
 
-
-router.put("/:id/edit", async function (req, res, next) {
+router.get("/:id", ensureLoggedIn, async function (req, res, next) {
+  try {
+    let userId = Number(req.params.id, 10);
+    if (!req.params.id || !Number.isInteger(userId)) {
+      res.status(400);
+      res.send({ error: `Invalid userID` });
+    } else {
+      await userController.getUserProfile(req, res);
+    }
+  } catch (error) {
+    return next(error);
+  }
+});
+router.put("/:id/edit", ensureLoggedIn, async function (req, res, next) {
   try {
     // Check if the req body has all the required parameters to complete a update user request
     const validator = jsonschema.validate(req.body, userUpdateSchema);

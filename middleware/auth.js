@@ -10,30 +10,62 @@ const SECRET_KEY = process.env.SECRET_KEY || "development-secret";
 
 /** Middleware: Authenticate user. */
 
-function authenticateJWT(req, res, next) {
-  try {
-    const tokenFromBody = req.headers.token;
-
-    const payload = jwt.verify(tokenFromBody, SECRET_KEY);
-
-    req.user = payload; // create a current user
-    return next();
-  } catch (err) {
-    return next();
-  }
+function createToken(payload) {
+  const token = jwt.sign(payload, SECRET_KEY, {
+    expiresIn: "1h",
+  });
+  return token;
 }
+
+// function ensureLoggedIn(req, res, next) {
+//   try {
+//     const tokenFromCookie = req.cookies.token;
+//     if (!tokenFromCookie) {
+//       res.status(401).send("Unauthorized: No token provided");
+//     } else {
+//       jwt.verify(tokenFromCookie, secret, function (err, decoded) {
+//         if (err) {
+//           res.status(401).send("Unauthorized: Invalid token");
+//         } else {
+//           req.username = decoded.username;
+//           next();
+//         }
+//       });
+//     }
+//     // return next();
+//   } catch (err) {
+//     return next();
+//   }
+// }
 
 /** Middleware: Requires user to be authenticated. */
 
 function ensureLoggedIn(req, res, next) {
-  if (req.session.user) {
-    next(); //If session exists, proceed to page
-  } else {
-    //Error, trying to access a logged in page!
+  if (!req.user) {
     return next({
       status: 401,
-      message: "Please login first to access this route",
+      message: "Unauthorized to perform this operation",
     });
+  }
+  return next();
+}
+function authenticateJWT(req, res, next) {
+  try {
+    tokenFromHeader = req.headers.token;
+    if (!tokenFromHeader) {
+      req.user = null;
+      console.log(`Request from a logged out user`);
+    } else {
+      const payload = jwt.verify(tokenFromHeader, SECRET_KEY);
+      console.log(
+        `request from user with username=${payload.username} and userid=${payload.id}`
+      );
+      req.user = payload;
+    }
+
+    return next();
+  } catch (err) {
+    return next();
   }
 }
 
@@ -41,7 +73,7 @@ function ensureLoggedIn(req, res, next) {
 
 function ensureCorrectUser(req, res, next) {
   try {
-    if (req.session.user.id === req.params.id) {
+    if (req.user.id === req.params.id) {
       return next();
     } else {
       return next({ status: 401, message: "Unauthorized" });
@@ -53,6 +85,7 @@ function ensureCorrectUser(req, res, next) {
 }
 
 module.exports = {
+  createToken,
   authenticateJWT,
   ensureLoggedIn,
   ensureCorrectUser,
