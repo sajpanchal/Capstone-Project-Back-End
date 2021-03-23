@@ -106,4 +106,27 @@ module.exports = {
         );
     }
   },
+
+  update(req, res) {
+    if ( !req.params.id ) {
+      res.status(401).send({ message: "Unathorized to update this user" });
+    } 
+    else {
+      db.User.update({
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        updatedAt: new Date(),      
+      },{
+        where: { id: req.params.id }
+      })
+    .then((exitingUser) => {
+        res.status(201).send({
+          message: `User with id ${exitingUser.id} updated successfully`,
+        });
+      })
+    }
+  
+},
+
+
 };

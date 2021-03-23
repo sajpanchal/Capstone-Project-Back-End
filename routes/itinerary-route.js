@@ -4,6 +4,7 @@ const jsonschema = require("jsonschema");
 const router = expressInstance.Router();
 const itineraryController = require("../controller/itinerary-controller");
 const { ensureLoggedIn } = require("../middleware/auth");
+const itineraryUpdationSchema = require("../schemas/update-itinerary.json");
 const itineraryCreationSchema = require("../schemas/create-itinerary.json");
 
 router.post(
@@ -40,4 +41,22 @@ router.delete("/:id", ensureLoggedIn, async function (req, res, next) {
   }
 });
 
+router.put(
+  "/:id/update-itinerary",
+  async function (req, res, next) {
+    try {
+      let validator = jsonschema.validate(req.body, itineraryUpdationSchema);
+      if (!validator.valid) {
+        const err = validator.errors.map((e) => e.stack)[0];
+        console.error("Schema error on itinerary updation", err);
+        res.status(400);
+        res.send({ error: err });
+      } else {
+        await itineraryController.updateItinerary(req, res);
+      }
+    } catch (err) {
+      return next(err);
+    }
+  }
+);
 module.exports = router;
