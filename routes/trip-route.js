@@ -52,4 +52,32 @@ router.put("/:id/update-trip", ensureLoggedIn, async function (req, res, next) {
   }
 });
 
+router.get("/:id/trips", async function (req, res, next) {
+  try {
+    let userId = Number(req.params.id, 10);
+    if (!req.params.id || !Number.isInteger(userId)) {
+      res.status(400);
+      res.send({ error: `Invalid userID` });
+    } else {
+      await tripController.getTrips(req, res);
+    }
+  } catch (error) {
+    return next(error);
+  }
+});
+
+router.get("/:id", async function (req, res, next) {
+  try {
+    let tripId = Number(req.params.id, 10);
+    if (!req.params.id || !Number.isInteger(tripId)) {
+      res.status(400);
+      res.send({ error: `Invalid trip id` });
+    } else {
+      await tripController.getTrip(req, res);
+    }
+  } catch (error) {
+    return next(error);
+  }
+});
+
 module.exports = router;

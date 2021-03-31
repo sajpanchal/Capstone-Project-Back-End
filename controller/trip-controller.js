@@ -60,5 +60,52 @@ module.exports = {
         });
       })
   }
-}
+},
+
+async getTrips(req, res) {
+  if (!req.params.id) {
+    res.status(401).send({ error: "Unathorized to view this page" });
+  } else {
+    await db.Trip.findAll({
+      where: { fk_organizerid: req.params.id },
+    }).then((trips) => {
+      if (trips) {
+        const tripsFound = trips;
+        var result = tripsFound[0];
+        res.status(202).send({
+          result: result
+        });
+      } else {
+        res.status(404).send({ error: "User does not have any trips" });
+      }
+    });
+  }
+},
+
+async getTrip(req, res) {
+  if (!req.params.id) {
+    res.status(401).send({ error: "Unathorized to view this page" });
+  } else {
+    await db.Trip.findAll({
+      where: { id: req.params.id },
+    }).then((trip) => {
+      if (trip.length === 1) {
+        const tripFound = trip[0];
+        res.status(202).send({
+          id: tripFound.id,
+          name: tripFound.name,
+          description: tripFound.description,
+          source: tripFound.source,
+          destination: tripFound.destination,
+          startdate: tripFound.startDate,
+          enddate: tripFound.endDate,
+          userid: tripFound.fk_organizerid
+        });
+      } else {
+        res.status(404).send({ error: "User does not have any trips" });
+      }
+    });
+  }
+},
+
 };
