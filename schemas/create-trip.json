@@ -24,10 +24,12 @@
       "maxLength": 30
     },
     "startDate": {
-      "type": "object"
+      "type": "string",
+      "format": "date"
     },
     "endDate": {
-      "type": "object"
+       "type": "string",
+       "format": "date"
     },
     "fk_organizerid": {
       "type": "string"

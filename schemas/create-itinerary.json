@@ -14,7 +14,8 @@
       "maxLength": 100
     },
     "date": {
-      "type": "object"
+       "type": "string",
+      "format": "date"
     },
     "fk_tripid": {
       "type": "string"
