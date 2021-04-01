@@ -16,7 +16,7 @@ module.exports = {
     })
       .then((newTrip) => {
         res.status(201).send({
-          message: `new Trip ${newTrip.name} created successfully`,
+          message: `new Trip ${newTrip.id} created successfully`,
         });
       })
       .catch((error) => {
