@@ -73,7 +73,8 @@ async getTrips(req, res) {
         const tripsFound = trips;
         var result = tripsFound[0];
         res.status(202).send({
-          result: result
+          //result: result
+          ...trips
         });
       } else {
         res.status(404).send({ error: "User does not have any trips" });
