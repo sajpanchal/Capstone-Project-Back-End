@@ -16,7 +16,8 @@ module.exports = {
     })
       .then((newTrip) => {
         res.status(201).send({
-          message: `new Trip ${newTrip.name} created successfully`,
+          message: `new Trip ${newTrip.id} created successfully`,
+          id: newTrip.id
         });
       })
       .catch((error) => {
@@ -73,7 +74,8 @@ async getTrips(req, res) {
         const tripsFound = trips;
         var result = tripsFound[0];
         res.status(202).send({
-          result: result
+          //result: result
+          ...trips
         });
       } else {
         res.status(404).send({ error: "User does not have any trips" });
