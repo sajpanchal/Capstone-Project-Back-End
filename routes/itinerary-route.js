@@ -60,4 +60,34 @@ router.put(
     }
   }
 );
+
+//tripID - get all itinerary of trip
+router.get("/:id/itinerary", async function (req, res, next) {
+  try {
+    let itinerary = Number(req.params.id, 10);
+    if (!req.params.id || !Number.isInteger(itinerary)) {
+      res.status(400);
+      res.send({ error: `Invalid trip ID` });
+    } else {
+      await itineraryController.getItineraries(req, res);
+    }
+  } catch (error) {
+    return next(error);
+  }
+});
+
+router.get("/:id", async function (req, res, next) {
+  try {
+    let tripId = Number(req.params.id, 10);
+    if (!req.params.id || !Number.isInteger(tripId)) {
+      res.status(400);
+      res.send({ error: `Invalid trip id` });
+    } else {
+      await itineraryController.getItinerary(req, res);
+    }
+  } catch (error) {
+    return next(error);
+  }
+});
+
 module.exports = router;

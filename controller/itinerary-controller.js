@@ -57,5 +57,51 @@ module.exports = {
         });
       })
   }
-}
+},
+
+async getItineraries(req, res) {
+  if (!req.params.id) {
+    res.status(401).send({ error: "Unathorized to view this page" });
+  } else {
+    await db.Itinerary.findAll({
+      where: { fk_tripid: req.params.id },
+    }).then((itinerary) => {
+      if (itinerary) {
+        const itineraryFound = itinerary;
+        var result = itineraryFound[0];
+        res.status(202).send({
+          //result: result
+          ...itinerary
+        });
+      } else {
+        res.status(404).send({ error: "User does not have any itinerary" });
+      }
+    });
+  }
+},
+
+async getItinerary(req, res) {
+  if (!req.params.id) {
+    res.status(401).send({ error: "Unathorized to view this page" });
+  } else {
+    await db.Itinerary.findAll({
+      where: { id: req.params.id },
+    }).then((itinerary) => {
+      if (itinerary.length === 1) {
+        const itineraryFound = itinerary[0];
+        res.status(202).send({
+          id: itineraryFound.id,
+          name: itineraryFound.name,
+          description: itineraryFound.description,
+          date: itineraryFound.source,
+          tripid: itineraryFound.fk_tripid
+        });
+      } else {
+        res.status(404).send({ error: "Trip does not have any itinerarys" });
+      }
+    });
+  }
+},
+
+
 };
