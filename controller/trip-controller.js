@@ -43,23 +43,25 @@ module.exports = {
       res.status(401).send({ message: "Unathorized to update this itenarary" });
     } 
     else {
-    db.Trip.update({
-      name: req.body.name,
-      description: req.body.description,
-      source: req.body.source,
-      destination: req.body.destination,
-      startDate: req.body.date || new Date(),
-      endDate: req.body.date || new Date(),
-      fk_organizerid: req.body.fk_organizerid,
-      updatedAt: new Date(),
-    },{
-      where: { id: req.params.id }
-    })
-      .then((existingTrip) => {
-        res.status(201).send({
-          message: ` Trip ${existingTrip.name} updated successfully`,
-        });
-      })
+    db.Trip.update(
+      {
+        name: req.body.name,
+        description: req.body.description,
+        source: req.body.source,
+        destination: req.body.destination,
+        startDate: req.body.startDate || new Date(),
+        endDate: req.body.endDate || new Date(),
+        fk_organizerid: req.body.fk_organizerid,
+        updatedAt: new Date(),
+      },
+      {
+        where: { id: req.params.id },
+      }
+    ).then((existingTrip) => {
+      res.status(201).send({
+        message: ` Trip ${existingTrip.name} updated successfully`,
+      });
+    });
   }
 },
 
